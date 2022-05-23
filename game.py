@@ -8,7 +8,7 @@ WIDTH = 1200
 HEIGHT = 700
 
 #Criação da janela
-display = pygame.display.set_mode((width, height))
+display = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Teste")
 
 #FPS e Velocidade do jogo
