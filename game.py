@@ -98,14 +98,30 @@ class Player(pygame.sprite.Sprite):
     
 class Inimigo(pygame.sprite.Sprite):
     #classe para criar os inimigos
-    def __init__(self):
+    def __init__(self, x, y, image, professor):
         #inicializa os monstros
-        pass
+        super().__init__()
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+        
+        # Professor --> decide o tipo do professor que vai spawnar atraves de um numero int
+        self.type = professor
+
+        # Caminho aleatorio dos professores
+        self.dx = random.choice([-1,1])
+        self.dy = random.choice([-1,1]) # -1 vai para a esquerda e 1 para a direita
+        self.velocidade = random.randint(1,5)
 
     def update(self):
         #atualiza o monstro
-        pass
+        self.rect.x += self.dx*self.velocidade
+        self.rect.y += self.dy*self.velocidade
 
+        if self.rect.left <= 0 or self.rect.right >= WIDTH:
+            self.dx = self.sx*(-1)
+        if self.rect.top <= 0 or self.rect.borrom >= HEIGHT:
+            self.dy = self.dy*(-1)
 
 #Criação do jogador
 player_group = pygame.sprite.Group()
