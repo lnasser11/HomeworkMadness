@@ -4,8 +4,8 @@ import random
 pygame.init()
 
 #Dimensões da janela
-width = 1200
-height = 700
+WIDTH = 1200
+HEIGHT = 700
 
 #Criação da janela
 display = pygame.display.set_mode((width, height))
@@ -56,20 +56,46 @@ class Player(pygame.sprite.Sprite):
     #Classe que o jogador controla
     def __init__(self):
         #inicializa o jogador
-        pass
+        super().__init__()
+        self.image = pygame.image.load("placeholders/deco_ph.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = WIDTH//2
+        self.rect.bottom = HEIGHT//2
+        
+        self.vidas = 3
+        self.warps = 2
+        self.velocidade = 8
+
+        self.som_entrega = pygame.mixer.Sound('placeholders/entrega_ph.wav')
+        self.som_morte = pygame.mixer.Sound('placeholders/morte_ph.wav')
+        self.som_warp = pygame.mixer.Sound('placeholders/warp_ph.wav')
+        self.som_sem_warp = pygame.mixer.Sound('placeholders/sem_warp_ph.wav')
 
     def update(self):
         #atualiza o jogador
-        pass
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_LEFT] and self.rect.left > 0:
+            self.rect.x -= self.velocidade
+        if keys[pygame.K_RIGHT] and self.rect.right < WIDTH:
+            self.rect.x += self.velocidade
+        if keys[pygame.K_UP] and self.rect.top > 0:
+            self.rect.y -= self.velocidade
+        if keys[pygame.K_DOWN] and self.rect.bottom < HEIGHT:
+            self.rect.y += self.velocity
 
     def tp(self):
-        #teletransporta o jogador para a safe zone
-        pass
+        #teletransporta o jogador para a safe zone (corredor)
+        if self.warps > 0:
+            self.warps -= 1
+            self.som_warp.play()
+            self.rect.bottom = HEIGHT
 
     def reseta(self):
         #reseta a posição do jogador
-        pass
-
+        self.rect.centerx = WIDTH//2
+        self.rect.bottom = HEIGHT
+    
 class Inimigo(pygame.sprite.Sprite):
     #classe para criar os inimigos
     def __init__(self):
