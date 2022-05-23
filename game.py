@@ -57,7 +57,8 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         #inicializa o jogador
         super().__init__()
-        self.image = pygame.image.load("placeholders/deco_ph.png")
+        self.image = pygame.image.load("deco_ph.png")
+        self.image = pygame.transform.scale(self.image, (64, 64)) # codigo tirado de: https://stackoverflow.com/questions/20002242/how-to-scale-images-to-screen-size-in-pygame
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH//2
         self.rect.bottom = HEIGHT//2
@@ -66,10 +67,10 @@ class Player(pygame.sprite.Sprite):
         self.warps = 2
         self.velocidade = 8
 
-        self.som_entrega = pygame.mixer.Sound('placeholders/entrega_ph.wav')
-        self.som_morte = pygame.mixer.Sound('placeholders/morte_ph.wav')
-        self.som_warp = pygame.mixer.Sound('placeholders/warp_ph.wav')
-        self.som_sem_warp = pygame.mixer.Sound('placeholders/sem_warp_ph.wav')
+        self.som_entrega = pygame.mixer.Sound('testesom.wav')
+        self.som_morte = pygame.mixer.Sound('testesom.wav')
+        self.som_warp = pygame.mixer.Sound('testesom.wav')
+        self.som_sem_warp = pygame.mixer.Sound('testesom.wav')
 
     def update(self):
         #atualiza o jogador
@@ -82,7 +83,7 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_UP] and self.rect.top > 0:
             self.rect.y -= self.velocidade
         if keys[pygame.K_DOWN] and self.rect.bottom < HEIGHT:
-            self.rect.y += self.velocity
+            self.rect.y += self.velocidade
 
     def tp(self):
         #teletransporta o jogador para a safe zone (corredor)
@@ -119,8 +120,8 @@ class Inimigo(pygame.sprite.Sprite):
         self.rect.y += self.dy*self.velocidade
 
         if self.rect.left <= 0 or self.rect.right >= WIDTH:
-            self.dx = self.sx*(-1)
-        if self.rect.top <= 0 or self.rect.borrom >= HEIGHT:
+            self.dx = self.dx*(-1)
+        if self.rect.top <= 0 or self.rect.bottom >= HEIGHT:
             self.dy = self.dy*(-1)
 
 #Criação do jogador
@@ -130,6 +131,15 @@ player_group.add(player)
 
 #Criação dos monstros
 monster_group = pygame.sprite.Group()
+#testeso
+m1 = pygame.image.load('monstro4_ph.png')
+m1 = pygame.transform.scale(m1, (64, 64))
+monstro = Inimigo(500, 500, m1, 1)
+monster_group.add(monstro)
+m2 = pygame.image.load('monstro2_ph.png')
+m2 = pygame.transform.scale(m2, (64, 64))
+monstro = Inimigo(100, 500, m2, 0)
+monster_group.add(monstro)
 
 #Game object
 game_obj = Game()
