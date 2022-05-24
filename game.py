@@ -34,7 +34,7 @@ class Game():
         
         self.prox_level = pygame.mixer.Sound('testesom.wav')
 
-        self.fonte = pygame.font.Font('Arial', 24)
+        self.fonte = pygame.font.Font('fonte.ttf', 24)
 
         #professores
         areia = pygame.image.load('areia.jpg')
@@ -71,23 +71,23 @@ class Game():
 
         cores = [BLUE,PURPLE,GREEN,YELLOW]
 
-        txt_entrega = self.font.render('Entrega atual:', True, WHITE)
+        txt_entrega = self.fonte.render('Entrega atual:', True, WHITE)
         entrega_rect = txt_entrega.get_rect()
         entrega_rect.centerx = WIDTH//2
         entrega_rect.top = 5
 
-        txt_pontos = self.font.render('Pontos: ' + str(self.pontos), True, WHITE)
+        txt_pontos = self.fonte.render('Pontos: ' + str(self.pontos), True, WHITE)
         pontos_rect = txt_pontos.get_rect()
         pontos_rect.topleft = (5,5)
 
-        txt_vidas = self.font.render('Vidas: ' + str(self.player.lives), True, WHITE)
+        txt_vidas = self.fonte.render('Vidas: ' + str(self.player.vidas), True, WHITE)
         vidas_rect = txt_vidas.get_rect()
         vidas_rect.topleft = (5,35)
 
-        txt_rounds = self.font.render('Round atual: ' + str(self.round), True, WHITE)
+        txt_rounds = self.fonte.render('Round atual: ' + str(self.round), True, WHITE)
         rounds_rect = txt_rounds.get_rect()
         rounds_rect.topleft = (5,65)
-        
+
     def colisao(self):
         #checa as colisoes dos monstros e do jogador 
         pass
