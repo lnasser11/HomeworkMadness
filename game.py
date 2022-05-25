@@ -12,7 +12,7 @@ display = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Homework Madness")
 
 #fundo do jogo
-bg = pygame.image.load('deco_bg.jpg')
+bg = pygame.image.load('assets/bg.png')
 bg = pygame.transform.scale(bg, (WIDTH, HEIGHT))
 #FPS e Velocidade do jogo
 FPS = 60
@@ -115,8 +115,8 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         #inicializa o jogador
         super().__init__()
-        self.image = pygame.image.load("deco_ph.png")
-        self.image = pygame.transform.scale(self.image, (64, 64)) # codigo tirado de: https://stackoverflow.com/questions/20002242/how-to-scale-images-to-screen-size-in-pygame
+        self.image = pygame.image.load("assets/mc2.png")
+        #self.image = pygame.transform.scale(self.image, (100, 100)) # codigo tirado de: https://stackoverflow.com/questions/20002242/how-to-scale-images-to-screen-size-in-pygame
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH//2
         self.rect.bottom = HEIGHT//2
@@ -134,11 +134,11 @@ class Player(pygame.sprite.Sprite):
         #atualiza o jogador
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_LEFT] and self.rect.left > 0:
+        if keys[pygame.K_LEFT] and self.rect.left > 23:
             self.rect.x -= self.velocidade
-        if keys[pygame.K_RIGHT] and self.rect.right < WIDTH:
+        if keys[pygame.K_RIGHT] and self.rect.right < WIDTH-23:
             self.rect.x += self.velocidade
-        if keys[pygame.K_UP] and self.rect.top > 0:
+        if keys[pygame.K_UP] and self.rect.top > 155:
             self.rect.y -= self.velocidade
         if keys[pygame.K_DOWN] and self.rect.bottom < HEIGHT:
             self.rect.y += self.velocidade
@@ -177,7 +177,7 @@ class Inimigo(pygame.sprite.Sprite):
         self.rect.x += self.dx*self.velocidade
         self.rect.y += self.dy*self.velocidade
 
-        if self.rect.left <= 0 or self.rect.right >= WIDTH:
+        if self.rect.left <= 23 or self.rect.right >= WIDTH-23:
             self.dx = self.dx*(-1)
         if self.rect.top <= 0 or self.rect.bottom >= HEIGHT:
             self.dy = self.dy*(-1)
