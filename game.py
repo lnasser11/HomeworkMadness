@@ -58,18 +58,20 @@ class Game():
 
 
     def update(self):
-        self.round_time += 1
-        
+        self.frame_count += 1
+        if self.frame_count == FPS:
+            self.round_time += 1
+            self.frame_count = 0
         self.colisao()
     def draw(self):
         #desenha as partes da tela 
         WHITE = (255,255,255)
-        BLUE = (20,176,235)
-        PURPLE = (226,73,243)
-        GREEN = (87,201,47)
-        YELLOW = (243,157,20)
+        AZUL = (50, 115, 168)
+        ROXO = (129, 50, 168)
+        VERDE = (50, 168, 70)
+        LARANJA = (201, 126, 34)
 
-        cores = [BLUE,PURPLE,GREEN,YELLOW]
+        cores = [AZUL,ROXO,VERDE,LARANJA]
 
         txt_entrega = self.fonte.render('Entrega atual:', True, WHITE)
         entrega_rect = txt_entrega.get_rect()
@@ -87,6 +89,26 @@ class Game():
         txt_rounds = self.fonte.render('Round atual: ' + str(self.round), True, WHITE)
         rounds_rect = txt_rounds.get_rect()
         rounds_rect.topleft = (5,65)
+
+        txt_time = self.font.render('Tempo: ' + str(self.round_time), True, WHITE)
+        time_rect = txt_time.get_rect()
+        time_rect.top_right = (WIDTH-10, 5)
+
+        txt_warp = self.font.render('Warps: ' + str(self.player.warps), True, WHITE)
+        warp_rect = txt_warp.get_rect()
+        warp_rect.topright = (WIDTH-10, 35)
+
+        #Colocar os textos no jogo
+        display.blit(txt_entrega, entrega_rect)
+        display.blit(txt_pontos, pontos_rect)
+        display.blit(txt_vidas, vidas_rect)
+        display.blit(txt_rounds, rounds_rect)
+        display.blit(txt_time, time_rect)
+        display.blit(txt_warp, warp_rect)
+        display.blit(self.alvo, self.alvo_rect)
+
+        pygame.draw.rect(display, cores[self.alvo_escolha], (WIDTH//2 - 32, 30, 64, 64), 2)
+        pygame.deaw.rect(display, cores[self.alvo_escolha], (0,100, WIDTH, HEIGHT-200), 4)
 
     def colisao(self):
         #checa as colisoes dos monstros e do jogador 
