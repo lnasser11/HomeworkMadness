@@ -53,8 +53,8 @@ class Game():
         self.alvo = self.alvos[self.alvo_escolha]
 
         self.alvo_rect = self.alvo.get_rect()
-        self.alvo_rect.centerx = WIDTH//2
-        self.alvo_rect.top = 30
+        self.alvo_rect.centerx = WIDTH//2+70
+        self.alvo_rect.top = 48
 
 
     def update(self):
@@ -75,28 +75,28 @@ class Game():
 
         txt_entrega = self.fonte.render('Entrega atual:', True, WHITE)
         entrega_rect = txt_entrega.get_rect()
-        entrega_rect.centerx = WIDTH//2
-        entrega_rect.top = 5
+        entrega_rect.centerx = WIDTH//2 - 50
+        entrega_rect.top = 60
 
         txt_pontos = self.fonte.render('Pontos: ' + str(self.pontos), True, WHITE)
         pontos_rect = txt_pontos.get_rect()
-        pontos_rect.topleft = (5,5)
+        pontos_rect.topleft = (95,60)
 
         txt_vidas = self.fonte.render('Vidas: ' + str(self.player.vidas), True, WHITE)
         vidas_rect = txt_vidas.get_rect()
-        vidas_rect.topleft = (5,35)
+        vidas_rect.topleft = (260,60)
 
         txt_rounds = self.fonte.render('Round atual: ' + str(self.round), True, WHITE)
         rounds_rect = txt_rounds.get_rect()
-        rounds_rect.topleft = (5,65)
+        rounds_rect.topleft = (95,95)
 
-        txt_time = self.font.render('Tempo: ' + str(self.round_time), True, WHITE)
+        txt_time = self.fonte.render('Tempo: ' + str(self.round_time), True, WHITE)
         time_rect = txt_time.get_rect()
-        time_rect.top_right = (WIDTH-10, 5)
+        time_rect.topright = (WIDTH-95, 55)
 
-        txt_warp = self.font.render('Warps: ' + str(self.player.warps), True, WHITE)
+        txt_warp = self.fonte.render('Sair da sala: ' + str(self.player.warps) + ' usos', True, WHITE)
         warp_rect = txt_warp.get_rect()
-        warp_rect.topright = (WIDTH-10, 35)
+        warp_rect.topright = (WIDTH-140, 95)
 
         #Colocar os textos no jogo
         display.blit(txt_entrega, entrega_rect)
@@ -107,8 +107,7 @@ class Game():
         display.blit(txt_warp, warp_rect)
         display.blit(self.alvo, self.alvo_rect)
 
-        pygame.draw.rect(display, cores[self.alvo_escolha], (WIDTH//2 - 32, 30, 64, 64), 2)
-        pygame.deaw.rect(display, cores[self.alvo_escolha], (0,100, WIDTH, HEIGHT-200), 4)
+        pygame.draw.rect(display, cores[self.alvo_escolha], (WIDTH//2+38, 48, 64, 64), 2)
 
     def colisao(self):
         #checa as colisoes dos monstros e do jogador 
@@ -235,6 +234,7 @@ while game:
 
     #tela do jogo
     display.fill((0,0,0))
+    pygame.draw.rect(display, (0,0,0), (19, 155, WIDTH-30, HEIGHT-330), 4)
     display.blit(bg, (0,0))
 
     #Atualização dos sprites
