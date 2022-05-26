@@ -84,7 +84,7 @@ class Game():
 
         txt_vidas = self.fonte.render('Vidas: ' + str(self.player.vidas), True, WHITE)
         vidas_rect = txt_vidas.get_rect()
-        vidas_rect.topleft = (260,60)
+        vidas_rect.topleft = (865,60)
 
         txt_rounds = self.fonte.render('Round atual: ' + str(self.round), True, WHITE)
         rounds_rect = txt_rounds.get_rect()
@@ -126,17 +126,17 @@ class Game():
             else:
                 self.player.som_morte.play()
                 self.player.vidas -= 1
-                if self.player.vidas == 0:
-                    self.pause()
+                if self.player.vidas <= 0:
+                    self.pause("Pontuação: " + str(self.pontos), "Aperte 'ENTER' para jogar novamente!")
                     self.restart()
                 self.player.reset()
 
     def new_round(self):
         #spawna os monstros 
-        self.pontos += int(10000*self.round/(1 + self.round_time))
-        self.round_time = 0
-        self.frame_count = 0
-        self.round += 1
+        self.pontos       += int(10000*self.round/(1 + self.round_time))
+        self.round_time    = 0
+        self.frame_count   = 0
+        self.round        += 1
         self.player.warps += 1
 
         for prof in self.grp_ini:
@@ -153,15 +153,45 @@ class Game():
 
     def novo_alvo(self):
         #escolhe um novo monstro para ser o alvo
-        pass
+        alvo_prof = random.choice(self.grp_ini.sprites())
+        self.alvo_escolha = alvo_prof.type
+        self.alvo = alvo_prof.image
 
-    def pause(self):
+    def pause(self, textao, textinho):
         #pausa o jogo
-        pass
+        BRANCO = (255,255,255)
+        textao = self.fonte.render(textao, True, BRANCO)
+        textao_rect = textao.get_rect()
+        textao_rect.center = (WIDTH//2, HEIGHT//2)
+
+        textinho = self.fonte.render(textinho, True, BRANCO)
+        inho_rect = textinho.get_rect()
+        inho_rect.center = (WIDTH//2, HEIGHT//2 + 64)
+
+        display.fill((0,0,0))
+        display.blit(textao, textao_rect)
+        display.blit(textinho, inho_rect)
+        pygame.display.update()
+
+        pausado = True
+        while pausado:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        pausado = False
+                if event.type == pygame.QUIT:
+                    pausado = False
+                    game = False
 
     def restart(self):
         #reseta o jogo
-        pass
+        self.pontos = 0
+        self.round = 0
+        self.vidas = 3
+        self.warps = 2
+        self.player.reset()
+
+        self.new_round()
 
 
 class Player(pygame.sprite.Sprite):
