@@ -159,6 +159,8 @@ class Game():
 
     def pause(self, textao, textinho):
         #pausa o jogo
+        global game
+
         BRANCO = (255,255,255)
         textao = self.fonte.render(textao, True, BRANCO)
         textao_rect = textao.get_rect()
@@ -187,8 +189,8 @@ class Game():
         #reseta o jogo
         self.pontos = 0
         self.round = 0
-        self.vidas = 3
-        self.warps = 2
+        player.vidas = 3
+        player.warps = 2
         self.player.reset()
 
         self.new_round()
@@ -224,7 +226,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.x += self.velocidade
         if keys[pygame.K_UP] and self.rect.top > 150:
             self.rect.y -= self.velocidade
-        if keys[pygame.K_DOWN] and self.rect.bottom < HEIGHT - 23:
+        if keys[pygame.K_DOWN] and self.rect.bottom < HEIGHT - 185:
             self.rect.y += self.velocidade
 
     def tp(self):
@@ -232,12 +234,12 @@ class Player(pygame.sprite.Sprite):
         if self.warps > 0:
             self.warps -= 1
             self.som_warp.play()
-            self.rect.bottom = HEIGHT
+            self.rect.bottom = HEIGHT - 23
 
     def reset(self):
         #reseta a posição do jogador
         self.rect.centerx = WIDTH//2
-        self.rect.bottom = HEIGHT
+        self.rect.bottom = HEIGHT - 23
     
 class Inimigo(pygame.sprite.Sprite):
     #classe para criar os inimigos
@@ -263,7 +265,7 @@ class Inimigo(pygame.sprite.Sprite):
 
         if self.rect.left <= 23 or self.rect.right >= WIDTH-23:
             self.dx = self.dx*(-1)
-        if self.rect.top <= 0 or self.rect.bottom >= HEIGHT:
+        if self.rect.top <= 150 or self.rect.bottom >= HEIGHT-175:
             self.dy = self.dy*(-1)
 
 #Criação do jogador
@@ -273,11 +275,12 @@ player_group.add(player)
 
 #Criação dos monstros
 monster_group = pygame.sprite.Group()
-#
 
 #Game object
 game_obj = Game(player, monster_group)
+game_obj.pause('Homework Madness', "Aperte 'ENTER' para começar")
 game_obj.new_round()
+
 #Game loop
 game = True
 
@@ -286,6 +289,9 @@ while game:
         #Se o jogador clicar no X a tela do jogo fecha
         if event.type == pygame.QUIT:
             game = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                player.tp()
 
 
     #tela do jogo
