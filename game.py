@@ -111,14 +111,47 @@ class Game():
 
     def colisao(self):
         #checa as colisoes dos monstros e do jogador 
-        pass
+        #colisoes entre o jogador e um professor
+        prof_coli = pygame.sprite.spritecollideany(self.player, self.grp_ini)
+        if prof_coli:
+            if prof_coli.type == self.alvo_escolha:
+                self.pontos += 10*self.round
+                prof_coli.remove(self.grp_ini) #remove o professor que recebeu a tarefa do grupo
+                if (self.grp_ini):
+                    self.player.som_entrega.play()
+                    self.novo_alvo()
+                else:
+                    self.player.reset()
+                    self.new_round()
+            else:
+                self.player.som_morte.play()
+                self.player.vidas -= 1
+                if self.player.vidas == 0:
+                    self.pause()
+                    self.restart()
+                self.player.reset()
 
     def new_round(self):
         #spawna os monstros 
+        self.pontos += int(10000*self.round/(1 + self.round_time))
+        self.round_time = 0
+        self.frame_count = 0
+        self.round += 1
+        self.player.warps += 1
 
-        pass
+        for prof in self.grp_ini:
+            self.grp_ini.remove(prof)
+        
+        for i in range(self.round):
+            self.grp_ini.add(Inimigo(random.randint(11, WIDTH - 75), random.randint(155, HEIGHT-394), self.alvos[0], 0))
+            self.grp_ini.add(Inimigo(random.randint(11, WIDTH - 75), random.randint(155, HEIGHT-394), self.alvos[1], 1))
+            self.grp_ini.add(Inimigo(random.randint(11, WIDTH - 75), random.randint(155, HEIGHT-394), self.alvos[2], 2))
+            self.grp_ini.add(Inimigo(random.randint(11, WIDTH - 75), random.randint(155, HEIGHT-394), self.alvos[3], 3))
 
-    def inimigo(self):
+        self.novo_alvo()
+        self.prox_level.play()
+
+    def novo_alvo(self):
         #escolhe um novo monstro para ser o alvo
         pass
 
@@ -137,10 +170,10 @@ class Player(pygame.sprite.Sprite):
         #inicializa o jogador
         super().__init__()
         self.image = pygame.image.load("assets/mc2.png")
-        #self.image = pygame.transform.scale(self.image, (100, 100)) # codigo tirado de: https://stackoverflow.com/questions/20002242/how-to-scale-images-to-screen-size-in-pygame
+        self.image = pygame.transform.scale(self.image, (35, 55)) # codigo tirado de: https://stackoverflow.com/questions/20002242/how-to-scale-images-to-screen-size-in-pygame
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH//2
-        self.rect.bottom = HEIGHT//2
+        self.rect.bottom = HEIGHT - 23
         
         self.vidas = 3
         self.warps = 2
@@ -159,9 +192,9 @@ class Player(pygame.sprite.Sprite):
             self.rect.x -= self.velocidade
         if keys[pygame.K_RIGHT] and self.rect.right < WIDTH-23:
             self.rect.x += self.velocidade
-        if keys[pygame.K_UP] and self.rect.top > 155:
+        if keys[pygame.K_UP] and self.rect.top > 150:
             self.rect.y -= self.velocidade
-        if keys[pygame.K_DOWN] and self.rect.bottom < HEIGHT:
+        if keys[pygame.K_DOWN] and self.rect.bottom < HEIGHT - 23:
             self.rect.y += self.velocidade
 
     def tp(self):
@@ -171,7 +204,7 @@ class Player(pygame.sprite.Sprite):
             self.som_warp.play()
             self.rect.bottom = HEIGHT
 
-    def reseta(self):
+    def reset(self):
         #reseta a posição do jogador
         self.rect.centerx = WIDTH//2
         self.rect.bottom = HEIGHT
@@ -210,18 +243,11 @@ player_group.add(player)
 
 #Criação dos monstros
 monster_group = pygame.sprite.Group()
-#testes
-m1 = pygame.image.load('monstro4_ph.png')
-m1 = pygame.transform.scale(m1, (64, 64))
-monstro = Inimigo(500, 500, m1, 1)
-monster_group.add(monstro)
-m2 = pygame.image.load('monstro2_ph.png')
-m2 = pygame.transform.scale(m2, (64, 64))
-monstro = Inimigo(100, 500, m2, 0)
-monster_group.add(monstro)
+#
 
 #Game object
 game_obj = Game(player, monster_group)
+game_obj.new_round()
 #Game loop
 game = True
 
