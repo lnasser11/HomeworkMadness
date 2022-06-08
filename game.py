@@ -139,6 +139,8 @@ class Game():
         self.round        += 1
         self.player.warps += 1
 
+        player.vidas = 3
+        
         for prof in self.grp_ini:
             self.grp_ini.remove(prof)
         
