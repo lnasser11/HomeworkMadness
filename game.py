@@ -292,7 +292,7 @@ monster_group = pygame.sprite.Group()
 
 #Game object
 game_obj = Game(player, monster_group)
-game_obj.pause('Você é um Fantasma! Sua última missão é entregar sua lição para seus antigos professores!', "Use as SETAS para se mover e ESPAÇO para sair da sala! Aperte 'ENTER' para começar!")
+game_obj.pause('Você é um Fantasma! Sua última tarefa é entregar sua lição para seus antigos professores!', "Use as SETAS para se mover e ESPAÇO para sair da sala! DICA: Você pode atravessar paredes!")
 game_obj.new_round()
 
 #Game loop
