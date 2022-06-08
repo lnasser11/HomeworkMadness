@@ -10,7 +10,7 @@ HEIGHT = 700
 #Criação da janela
 display = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Homework Madness")
-
+''
 #fundo do jogo
 bg = pygame.image.load('assets/bg.png')
 bg = pygame.transform.scale(bg, (WIDTH, HEIGHT))
